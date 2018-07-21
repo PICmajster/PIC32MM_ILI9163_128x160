@@ -51,7 +51,7 @@ void lcdWriteCommand_bis(uint8_t cmdOut)
 
 void lcdWriteParameter_bis(uint8_t data)
 {
-	writeSD(data) ;  // Clock out command bits
+	writeSD(data) ;  
 }
 
 void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2)
@@ -178,14 +178,14 @@ void lcdClearDisplay(uint16_t colour)
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x7f);
+	lcdWriteParameter_bis(0x7f); //7f = 128px
 
 	/*Set the page address to 0-159*/
 	lcdWriteCommand_bis(SET_PAGE_ADDRESS);
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f);
+	lcdWriteParameter_bis(0x9f); //9f = 160px
   
 	/*Plot the pixels*/
 	lcdWriteCommand_bis(WRITE_MEMORY_START);
@@ -199,14 +199,14 @@ void lcdPlot(uint8_t x, uint8_t y, uint16_t colour)
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(x);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x7f);
+	lcdWriteParameter_bis(0x7f); //7f = 128px
   
 	/*Vertical Address end Position*/
 	lcdWriteCommand_bis(SET_PAGE_ADDRESS);
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(y);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f);
+	lcdWriteParameter_bis(0x9f); //9f = 160px
 
 	/*Plot the point*/
 	lcdWriteCommand_bis(WRITE_MEMORY_START);
@@ -303,13 +303,13 @@ void lcdFilledRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(x0);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x1);
+	lcdWriteParameter_bis(x1); 
   
 	lcdWriteCommand_bis(SET_PAGE_ADDRESS); // Vertical Address end Position
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(y0);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f);
+	lcdWriteParameter_bis(0x9f); //9f = 160px
 		
 	lcdWriteCommand_bis(WRITE_MEMORY_START);
 	
@@ -381,7 +381,7 @@ void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t height, uint8_t
 		lcdWriteParameter_bis(0x00);
 		lcdWriteParameter_bis(y);				
 		lcdWriteParameter_bis(0x00);
-		lcdWriteParameter_bis(0x9f);
+		lcdWriteParameter_bis(0x9f); //9f = 160px
 		
 		lcdWriteCommand_bis(WRITE_MEMORY_START);
 				
@@ -424,7 +424,7 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(y);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f);
+	lcdWriteParameter_bis(0x9f); //9f = 160px
 		
 	lcdWriteCommand_bis(WRITE_MEMORY_START);
 	
