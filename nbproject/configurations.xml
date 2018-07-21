@@ -9,7 +9,6 @@
         <itemPath>interrupt_manager.h</itemPath>
         <itemPath>mcc.h</itemPath>
         <itemPath>pin_manager.h</itemPath>
-        <itemPath>spi2.h</itemPath>
       </logicalFolder>
       <itemPath>ili9163.h</itemPath>
       <itemPath>delay.h</itemPath>
@@ -30,7 +29,6 @@
         <itemPath>interrupt_manager.c</itemPath>
         <itemPath>mcc.c</itemPath>
         <itemPath>pin_manager.c</itemPath>
-        <itemPath>spi2.c</itemPath>
       </logicalFolder>
       <itemPath>ili9163.c</itemPath>
       <itemPath>delay.c</itemPath>

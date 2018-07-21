@@ -18,7 +18,6 @@
 int main(void) {
     // initialize the device
     SYSTEM_Initialize();
-    //SPI2_Initialize(); /*Master*/
     RESET_OFF; /*Reset hgh*/
     lcdInitialise(LCD_ORIENTATION3);
         

@@ -13,7 +13,7 @@
 #include "font8x12.h"
 #include "bitmap_minionek.h"
 
-
+/*symulacja SPI*/
 void writeSD(uint8_t byteOut)
 { 
   uint8_t bitcnt ;
@@ -45,13 +45,11 @@ void lcdWriteCommand_bis(uint8_t cmdOut)
 
 void lcdWriteParameter_bis(uint8_t data)
 {
-	/*Send Data to SPI*/
 	writeSD(data) ;  // Clock out command bits
 }
 
 void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2)
 {
-	/*Send Data to SPI*/
 	writeSD(dataByte1);
 	writeSD(dataByte2);
 }
@@ -74,32 +72,6 @@ void lcdReset(void)
 	SCE_OFF;
 }
 
-void lcdWriteCommand(uint8_t data)
-{
-	SCE_ON;
-	DC_ON; 		/*DC on = command*/
-	/*Send Data to SPI*/
-	SPI2_Exchange8bit(data);
-    DC_OFF; 
-	SCE_OFF;
-}
-
-void lcdWriteParameter(uint8_t data)
-{
-	SCE_ON;
-	/*Send Data to SPI*/
-	SPI2_Exchange8bit(data);
-	SCE_OFF;
-}
-
-void lcdWriteData(uint8_t dataByte1, uint8_t dataByte2)
-{
-	SCE_ON;
-	/*Send Data to SPI*/
-	SPI2_Exchange8bit(dataByte1);
-	SPI2_Exchange8bit(dataByte2);
-	SCE_OFF;
-}
 // Initialise the display with the require screen orientation
 void lcdInitialise(uint8_t orientation)
 {   
