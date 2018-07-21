@@ -36,6 +36,12 @@ void writeSD(uint8_t byteOut)
   
 }
 
+/********************************************
+ * 
+ * Low-level LCD driving functions
+ * 
+ **********************************************/
+
 void lcdWriteCommand_bis(uint8_t cmdOut)
 { // Write a command to Display
    DC_ON; 		/*DC on = command set A0 low, select Command mode DisplayD_C = 0 for this byte*/
@@ -53,11 +59,6 @@ void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2)
 	writeSD(dataByte1);
 	writeSD(dataByte2);
 }
-/********************************************
- * 
- * Low-level LCD driving functions
- * 
- **********************************************/
 
 // Reset the LCD hardware
 void lcdReset(void)
