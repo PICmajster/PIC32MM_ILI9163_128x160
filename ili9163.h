@@ -147,7 +147,6 @@ void lcdCircle(int16_t xCentre, int16_t yCentre, int16_t radius, uint16_t colour
 
 void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
-
 void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t heigth, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 
 
