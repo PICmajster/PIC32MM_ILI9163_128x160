@@ -11,7 +11,7 @@
 #include "font5x8.h"
 #include "font8x8.h"
 #include "font8x12.h"
-#include "bitmap_minionek.h"
+
 
 /*symulacja SPI*/
 void writeSD(uint8_t byteOut)

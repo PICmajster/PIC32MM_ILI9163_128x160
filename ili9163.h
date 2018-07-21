@@ -1,23 +1,6 @@
 #ifndef ILI9163_H_
 #define ILI9163_H_
 
-
-#define RESET_ON 	PORTCbits.RC4 = 0; 
-#define RESET_OFF 	PORTCbits.RC4 = 1; 	
-#define SCE_ON		PORTCbits.RC5 = 0; 
-#define SCE_OFF		PORTCbits.RC5 = 1; 
-#define DC_ON		PORTCbits.RC3 = 0;
-#define DC_OFF		PORTCbits.RC3 = 1; 
-
-#define DisplayCLK   PORTBbits.RB8
-#define DisplaySDI   PORTBbits.RB3 
-extern const unsigned char bitmap[];
-
-// Screen orientation defines:
-// 0 = Ribbon at top
-// 1 = Ribbon at left
-// 2 = Ribbon at right
-// 3 = Ribbon at bottom
 /*
      Signal
    
@@ -28,16 +11,28 @@ extern const unsigned char bitmap[];
      SCK  (Serial Clock)    --> RB8
      
 */
+
+#define RESET_ON 	PORTCbits.RC4 = 0; 
+#define RESET_OFF 	PORTCbits.RC4 = 1; 	
+#define SCE_ON		PORTCbits.RC5 = 0; 
+#define SCE_OFF		PORTCbits.RC5 = 1; 
+#define DC_ON		PORTCbits.RC3 = 0;
+#define DC_OFF		PORTCbits.RC3 = 1; 
+
+#define DisplayCLK   PORTBbits.RB8
+#define DisplaySDI   PORTBbits.RB3 
+
+// Screen orientation defines:
+// 0 = Ribbon at top
+// 1 = Ribbon at left
+// 2 = Ribbon at right
+// 3 = Ribbon at bottom
+
 #define LCD_ORIENTATION0	96
 #define LCD_ORIENTATION1	160
 #define LCD_ORIENTATION2	192
 #define LCD_ORIENTATION3	0
-/*
- #define LCD_ORIENTATION0	0
-#define LCD_ORIENTATION1	96
-#define LCD_ORIENTATION2	160
-#define LCD_ORIENTATION3	192
- */
+
  
 /*
  * Colour definition

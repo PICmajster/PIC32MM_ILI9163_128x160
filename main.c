@@ -14,6 +14,7 @@
 #include <stdint.h> /*deklaracje uint8_t itp*/
 #include "delay.h"
 #include "ili9163.h"
+#include "bitmap_minionek.h"
 
 int main(void) {
     // initialize the device
