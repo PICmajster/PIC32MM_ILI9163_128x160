@@ -131,10 +131,11 @@ inline uint8_t lcdTextX(uint8_t x) { return x*6; }
 inline uint8_t lcdTextY(uint8_t y) { return y*8; }
 
 //	LCD function prototypes
+void writeSD(uint8_t byteOut);
 void lcdReset(void);
-void lcdWriteCommand(uint8_t address);
-void lcdWriteParameter(uint8_t parameter);
-void lcdWriteData(uint8_t dataByte1, uint8_t dataByte2);
+void lcdWriteCommand_bis(uint8_t cmdOut);
+void lcdWriteParameter_bis(uint8_t data);
+void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2);
 void lcdInitialise(uint8_t orientation);
 
 void lcdClearDisplay(uint16_t colour);
@@ -149,9 +150,5 @@ void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16
 
 void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t heigth, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 
-void writeSD(uint8_t byteOut);
-void lcdWriteCommand_bis(uint8_t cmdOut);
-void lcdWriteParameter_bis(uint8_t data);
-void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2);
 
 #endif /* ILI9163LCD_H_ */
