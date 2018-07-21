@@ -30,17 +30,14 @@ void PIN_MANAGER_Initialize(void)
     /*set Input for PGD1 and PGC1*/
     TRISBbits.TRISB0 = 1 ;
     TRISBbits.TRISB1 = 1 ;
-    /*set Input for SPI2*/
-    //TRISAbits.TRISA9 = 1 ; /*SDI Master*/
-    /*set Output for SPI2*/
-    TRISBbits.TRISB3 = 0 ; /*SDO Master*/
-    TRISBbits.TRISB8 = 0 ; /*SCK Master*/
     /*set Output for LED*/
     TRISBbits.TRISB6 = 0 ; /*LED*/
     /*set Output for LCD ILI9631*/
     TRISCbits.TRISC5 = 0; /*CS*/
     TRISCbits.TRISC3 = 0; /*A0*/
     TRISCbits.TRISC4 = 0; /*RESET*/
+    TRISBbits.TRISB3 = 0 ; /*SDO software */
+    TRISBbits.TRISB8 = 0 ; /*SCK software */
         
     /****************************************************************************
      * Setting the Weak Pull Up and Weak Pull Down SFR(s)
