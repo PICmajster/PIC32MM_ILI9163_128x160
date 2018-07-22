@@ -15,7 +15,7 @@
       <itemPath>font5x8.h</itemPath>
       <itemPath>font8x8.h</itemPath>
       <itemPath>font8x12.h</itemPath>
-      <itemPath>bitmap_minionek.h</itemPath>
+      <itemPath>bitmap.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

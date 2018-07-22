@@ -14,7 +14,7 @@
 #include <stdint.h> /*deklaracje uint8_t itp*/
 #include "delay.h"
 #include "ili9163.h"
-#include "bitmap_minionek.h"
+#include "bitmap.h"
 
 int main(void) {
     // initialize the device
@@ -35,7 +35,12 @@ int main(void) {
 	//lcdFilledRectangle(20, 20, 50, 50, TURKISE);
 	//lcdLine(20,50,100,50,LIME);
 	//lcdPutCh('A',5,5,LIME,BLACK);
-    lcdBitmap(bitmap,93,128,0,0,PINK,WHITE);
+    lcdBitmap(bitmap1,128,30,0,0,BLACK,TURKISE);
+    lcdBitmap(bitmap3,128,30,0,31,YELLOW,BLUE);
+    lcdBitmap(bitmap2,128,30,0,62,BLACK,LIME);
+    lcdBitmap(bitmap4,128,30,0,93,BLACK,PINK);
+    lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
+    
     
     
     while (1) {
