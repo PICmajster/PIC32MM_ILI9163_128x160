@@ -32,16 +32,16 @@ int main(void) {
     //INTERRUPT_GlobalDisable();
     lcdClearDisplay(BLACK);
     //lcdPutS("PIC32MM", lcdTextX(1), lcdTextY(2), YELLOW, BLACK);
-	//lcdFilledRectangle(20, 20, 50, 50, TURKISE);
+	//lcdFilledRectangle(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
 	//lcdPutCh('A',5,5,LIME,BLACK);
-    lcdBitmap(bitmap1,128,30,0,0,BLACK,TURKISE);
-    lcdBitmap(bitmap3,128,30,0,31,YELLOW,BLUE);
-    lcdBitmap(bitmap2,128,30,0,62,BLACK,LIME);
-    lcdBitmap(bitmap4,128,30,0,93,BLACK,PINK);
-    lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
+//    lcdBitmap(bitmap1,128,30,0,0,BLACK,LIME);
+//    lcdBitmap(bitmap3,128,30,0,31,YELLOW,RED);
+//    lcdBitmap(bitmap2,128,30,0,62,LIGHT_GOLDENROD_YELLOW,BLUE);
+//    lcdBitmap(bitmap4,128,30,0,93,RED,PINK);
+//    lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
     
-    
+    drawChar(5, 5, '1', ORANGE, BLACK,5);
     
     while (1) {
 

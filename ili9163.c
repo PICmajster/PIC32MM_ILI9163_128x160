@@ -1,7 +1,8 @@
 /************************************************************************
 	ili9163.c
     ILI9163 128x160 LCD library
-   
+    3.3 V
+    for PIC32MM
 ***********************************************************************/
 
 #include "mcu_config_files/mcc.h"
@@ -11,6 +12,7 @@
 #include "font5x8.h"
 #include "font8x8.h"
 #include "font8x12.h"
+
 
 
 /*symulacja SPI*/
@@ -465,5 +467,101 @@ void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16
 	}
 }
 
- 
- 
+/**************************************************
+ * 
+ * LCD special functions / translation from ST7735
+ * 
+ **************************************************/
+uint8_t width = 128;
+uint8_t height = 160;
+int8_t colstart = 0, rowstart = 0;
+
+void pushColour(uint16_t colour) 
+{
+  DC_OFF;//SET_HIGH(DXL);
+  lcdWriteParameter_bis(colour >> 8); //spiWrite(colour >> 8);
+  lcdWriteParameter_bis(colour); //spiWrite(colour);
+}
+
+void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) 
+{
+  lcdWriteCommand_bis(SET_COLUMN_ADDRESS); //writeCommand(ST7735_CASET); 
+  lcdWriteParameter_bis(0x00); //writeData(0x00);
+  lcdWriteParameter_bis(x0+colstart); //writeData(x0+colstart);   
+  lcdWriteParameter_bis(0x00); //writeData(0x00);
+  lcdWriteParameter_bis(x1+colstart); //writeData(x1+colstart);  
+
+  lcdWriteCommand_bis(SET_PAGE_ADDRESS); //writeCommand(ST7735_RASET); 
+  lcdWriteParameter_bis(0x00); //writeData(0x00);
+  lcdWriteParameter_bis(y0+rowstart); //writeData(y0+rowstart);  
+  lcdWriteParameter_bis(0x00); //writeData(0x00);
+  lcdWriteParameter_bis(y1+rowstart); //writeData(y1+rowstart); 
+
+  lcdWriteCommand_bis(WRITE_MEMORY_START); //writeCommand(ST7735_RAMWR);
+}
+
+void drawPixel(int16_t x, int16_t y, uint16_t colour) 
+{
+  if((x < 0) ||(x >= width) || (y < 0) || (y >= height)) return;
+
+  setAddrWindow(x,y,x+1,y+1);
+  pushColour(colour);
+}
+
+void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour) 
+{
+  if((x >= width) || (y >= height)) return;
+  if((x + w - 1) >= width)  {
+    w = width  - x;
+  }
+  if((y + h - 1) >= height) {
+    h = height - y;
+  }
+  uint8_t hi = colour >> 8, lo = colour;
+  
+  setAddrWindow(x, y, x+w-1, y+h-1);
+  DC_OFF; //SET_HIGH(DXL);
+
+  for(y=h; y>0; y--) {
+    for(x=w; x>0; x--) {
+      lcdWriteParameter_bis(hi); //spiWrite(hi);
+      lcdWriteParameter_bis(lo); //spiWrite(lo);
+    }
+  } 
+}
+
+void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, uint16_t bg, uint8_t size) {
+
+  if((x >= width)              || 
+     (y >= height)             || 
+     ((x + 6 * size - 1) < 0)  || 
+     ((y + 8 * size - 1) < 0)) 
+    return;
+  
+  int8_t i;
+  for (i=0; i<6; i++ ) {
+    uint8_t line;
+    if (i == 6)  //oryg 5
+      line = 0x0;
+    else 
+      line = font5x8[character][i];//*(font1+(character*5)+i);
+    
+    int8_t j;
+    for (j = 0; j<8; j++) {
+      if (line & 0x1) {
+        if (size == 1) // default size
+          drawPixel(x+i, y+j, colour);
+        else {  // big size
+          fillRect(x+(i*size), y+(j*size), size, size, colour);
+        } 
+      } else if (bg != colour) {
+        if (size == 1) // default size
+          drawPixel(x+i, y+j, bg);
+        else {  // big size
+          fillRect(x+i*size, y+j*size, size, size, bg);
+        }
+      }
+      line >>= 1;
+    }
+  }
+}

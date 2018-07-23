@@ -22,11 +22,11 @@
 #define DisplayCLK   PORTBbits.RB8
 #define DisplaySDI   PORTBbits.RB3 
 
-// Screen orientation defines:
-// 0 = Ribbon at top
-// 1 = Ribbon at left
-// 2 = Ribbon at right
-// 3 = Ribbon at bottom
+/* Screen orientation defines:
+ 0 = Ribbon at top
+ 1 = Ribbon at left
+ 2 = Ribbon at right
+ 3 = Ribbon at bottom*/
 
 #define LCD_ORIENTATION0	96
 #define LCD_ORIENTATION1	160
@@ -35,11 +35,10 @@
 
  
 /*
- * Colour definition
- * for more colours * Colour Table
-* http://www.rapidtables.com/web/color/RGB_Color.htm
-* 
-*/
+  Colour definition
+  for more colours * Colour Table
+  http://www.rapidtables.com/web/color/RGB_Color.htm
+ */
 
 // RGB565 Format converter
 #define RGB565(r,g,b) (((uint16_t)r & 0x00F8) << 8) | (((uint16_t)g & 0x00FC) << 3) | (((uint16_t)b & 0x00F8) >> 3)  
@@ -308,5 +307,11 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t heigth, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 
+/*Special Function translate from ST7735*/
+void pushColour(uint16_t colour);
+void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
+void drawPixel(int16_t x, int16_t y, uint16_t colour) ;
+void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour);
+void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, uint16_t bg, uint8_t size);
 
-#endif /* ILI9163LCD_H_ */
+#endif /* ILI9163_H_ */
