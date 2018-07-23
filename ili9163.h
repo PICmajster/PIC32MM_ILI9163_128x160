@@ -313,5 +313,6 @@ void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
 void drawPixel(int16_t x, int16_t y, uint16_t colour) ;
 void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour);
 void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, uint16_t bg, uint8_t size);
+void drawString(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
 
 #endif /* ILI9163_H_ */

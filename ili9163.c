@@ -435,10 +435,13 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 	{
 		for (column = 0; column < 6; column++)
 		{
-			if ((font5x8[character][column]) & (1 << row))
-				lcdWriteData_bis(fgColour >> 8, fgColour);
-			else lcdWriteData_bis(bgColour >> 8, bgColour);
-		}
+			if ((font6x8[character][column]) & (1 << row))
+            
+				 lcdWriteData_bis(fgColour >> 8, fgColour);
+            else lcdWriteData_bis(bgColour >> 8, bgColour);
+        }  
+                 
+		
 	}
 }
 
@@ -462,7 +465,7 @@ void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16
 		if (y > 152) break; //120 oryginal for 128x128
 
 		// Plot the current character
-		lcdPutCh(string[characterNumber], x, y, fgColour, bgColour);
+//		lcdPutCh(string[characterNumber], x, y, fgColour, bgColour);
 		x += 6;
 	}
 }
@@ -475,6 +478,7 @@ void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16
 uint8_t width = 128;
 uint8_t height = 160;
 int8_t colstart = 0, rowstart = 0;
+int16_t wrap;
 
 void pushColour(uint16_t colour) 
 {
@@ -544,7 +548,7 @@ void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, ui
     if (i == 6)  //oryg 5
       line = 0x0;
     else 
-      line = font5x8[character][i];//*(font1+(character*5)+i);
+      line = font6x8[character][i];//*(font1+(character*5)+i);
     
     int8_t j;
     for (j = 0; j<8; j++) {
@@ -563,5 +567,25 @@ void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, ui
       }
       line >>= 1;
     }
+  }
+}
+
+void drawString(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size) {
+  
+  while(*c) {
+    if (*c == '\n') {
+      y += size*8;
+      x  = 0;
+    } else if (*c == '\r') {
+      // Skip
+    } else {
+      drawChar(x, y, *c, colour, bg, size);
+      x += size*6;
+      if (wrap && (x > (width - size*6))) {
+        y += size*8;
+        x = 0;
+      }
+    }
+    c++;
   }
 }

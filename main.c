@@ -41,7 +41,8 @@ int main(void) {
 //    lcdBitmap(bitmap4,128,30,0,93,RED,PINK);
 //    lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
     
-    drawChar(5, 5, '1', ORANGE, BLACK,5);
+    //drawChar(5, 5, '1', ORANGE, BLACK,5);
+    drawString("ILI9163", 0, 50, ORANGE, BLACK, 3);
     
     while (1) {
 
