@@ -198,26 +198,6 @@ void lcdClearDisplay(uint16_t colour)
 	for(pixel = 0; pixel < 20481; pixel++) lcdWriteData_bis(colour >> 8, colour);
 }
 
-void lcdPlot(uint8_t x, uint8_t y, uint16_t colour)
-{
-	/*Horizontal Address Start Position*/
-	lcdWriteCommand_bis(SET_COLUMN_ADDRESS);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x7f); //7f = 128px
-  
-	/*Vertical Address end Position*/
-	lcdWriteCommand_bis(SET_PAGE_ADDRESS);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(y);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f); //9f = 160px
-
-	/*Plot the point*/
-	lcdWriteCommand_bis(WRITE_MEMORY_START);
-	lcdWriteData_bis(colour >> 8, colour);
-}
 
 // Draw a line from x0, y0 to x1, y1
 // Note:	This is a version of Bresenham's line drawing algorithm
@@ -250,7 +230,7 @@ void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
 	dy <<= 1; 							// dy is now 2*dy
 	dx <<= 1; 							// dx is now 2*dx
  
-	lcdPlot(x0, y0, colour);
+	lcdPixel(x0, y0, colour);
 
 	if (dx > dy) {
 		int fraction = dy - (dx >> 1);	// same as 2*dy - dx
@@ -264,7 +244,7 @@ void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
 
    			x0 += stepx;
    			fraction += dy; 				// same as fraction -= 2*dy
-   			lcdPlot(x0, y0, colour);
+   			lcdPixel(x0, y0, colour);
 		}
 	}
 	else
@@ -280,7 +260,7 @@ void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
 
 			y0 += stepy;
 			fraction += dx;
-			lcdPlot(x0, y0, colour);
+			lcdPixel(x0, y0, colour);
 		}
 	}
 }
@@ -362,14 +342,14 @@ void lcdCircle(int16_t xCentre, int16_t yCentre, int16_t radius, uint16_t colour
  
     while(x <= y)
 	{
-		lcdPlot(xCentre + x, yCentre + y, colour);
-		lcdPlot(xCentre + y, yCentre + x, colour);
-		lcdPlot(xCentre - x, yCentre + y, colour);
-		lcdPlot(xCentre + y, yCentre - x, colour);
-		lcdPlot(xCentre - x, yCentre - y, colour);
-		lcdPlot(xCentre - y, yCentre - x, colour);
-		lcdPlot(xCentre + x, yCentre - y, colour);
-		lcdPlot(xCentre - y, yCentre + x, colour);
+		lcdPixel(xCentre + x, yCentre + y, colour);
+		lcdPixel(xCentre + y, yCentre + x, colour);
+		lcdPixel(xCentre - x, yCentre + y, colour);
+		lcdPixel(xCentre + y, yCentre - x, colour);
+		lcdPixel(xCentre - x, yCentre - y, colour);
+		lcdPixel(xCentre - y, yCentre - x, colour);
+		lcdPixel(xCentre + x, yCentre - y, colour);
+		lcdPixel(xCentre - y, yCentre + x, colour);
 
 		if (d < 0) d += (4 * x) + 6;
 		else
@@ -382,6 +362,11 @@ void lcdCircle(int16_t xCentre, int16_t yCentre, int16_t radius, uint16_t colour
 	}
 }
 
+void lcdFillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t colour) 
+{
+  lcdFastVLine(x0, y0-r, 2*r+1, colour);
+  lcdFillCircleHelper(x0, y0, r, 3, 0, colour);
+}
 
 // Plot a Bitmap at the specified x, y co-ordinates (top left hand corner of Bitmap)
 /*
@@ -533,7 +518,7 @@ void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
   lcdWriteCommand_bis(WRITE_MEMORY_START); //writeCommand(ST7735_RAMWR);
 }
 
-void drawPixel(int16_t x, int16_t y, uint16_t colour) 
+void lcdPixel(int16_t x, int16_t y, uint16_t colour) 
 {
   if((x < 0) ||(x >= width) || (y < 0) || (y >= height)) return;
 
@@ -541,7 +526,120 @@ void drawPixel(int16_t x, int16_t y, uint16_t colour)
   lcdWriteData_bis(colour >> 8, colour);
 }
 
+void lcdFillScreen(uint16_t colour) 
+{
+  lcdFillRect(0, 0,  width, height, colour);
+}
+
+void lcdCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t colour) 
+{
+  int16_t f     = 1 - r;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * r;
+  int16_t x     = 0;
+  int16_t y     = r;
+
+  while (x<y) {
+    if (f >= 0) {
+      y--;
+      ddF_y += 2;
+      f     += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f     += ddF_x;
+    if (cornername & 0x4) {
+      lcdPixel(x0 + x, y0 + y, colour);
+      lcdPixel(x0 + y, y0 + x, colour);
+    } 
+    if (cornername & 0x2) {
+      lcdPixel(x0 + x, y0 - y, colour);
+      lcdPixel(x0 + y, y0 - x, colour);
+    }
+    if (cornername & 0x8) {
+      lcdPixel(x0 - y, y0 + x, colour);
+      lcdPixel(x0 - x, y0 + y, colour);
+    }
+    if (cornername & 0x1) {
+      lcdPixel(x0 - y, y0 - x, colour);
+      lcdPixel(x0 - x, y0 - y, colour);
+    }
+  }
+}
+
+void lcdFillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, 
+      int16_t delta, uint16_t colour) 
+{
+
+  int16_t f     = 1 - r;
+  int16_t ddF_x = 1;
+  int16_t ddF_y = -2 * r;
+  int16_t x     = 0;
+  int16_t y     = r;
+
+  while (x<y) {
+    if (f >= 0) {
+      y--;
+      ddF_y += 2;
+      f     += ddF_y;
+    }
+    x++;
+    ddF_x += 2;
+    f     += ddF_x;
+
+    if (cornername & 0x1) {
+      lcdFastVLine(x0+x, y0-y, 2*y+1+delta, colour);
+      lcdFastVLine(x0+y, y0-x, 2*x+1+delta, colour);
+    }
+    if (cornername & 0x2) {
+      lcdFastVLine(x0-x, y0-y, 2*y+1+delta, colour);
+      lcdFastVLine(x0-y, y0-x, 2*x+1+delta, colour);
+    }
+  }
+}
+
+void lcdRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t colour) 
+{
+  lcdFastHLine(x+r  , y    , w-2*r, colour); 
+  lcdFastHLine(x+r  , y+h-1, w-2*r, colour);
+  lcdFastVLine(x    , y+r  , h-2*r, colour);
+  lcdFastVLine(x+w-1, y+r  , h-2*r, colour);
+  lcdCircleHelper(x+r    , y+r    , r, 1, colour);
+  lcdCircleHelper(x+w-r-1, y+r    , r, 2, colour);
+  lcdCircleHelper(x+w-r-1, y+h-r-1, r, 4, colour);
+  lcdCircleHelper(x+r    , y+h-r-1, r, 8, colour);
+}
+
+void lcdFillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, 
+        int16_t r, uint16_t colour) 
+{
+  lcdFillRect(x+r, y, w-2*r, h, colour);
+  lcdFillCircleHelper(x+w-r-1, y+r, r, 1, h-2*r-1, colour);
+  lcdFillCircleHelper(x+r    , y+r, r, 2, h-2*r-1, colour);
+}
 
 
+void lcdTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+        int16_t x2, int16_t y2, uint16_t colour) 
+{
+  lcdLine(x0, y0, x1, y1, colour);
+  lcdLine(x1, y1, x2, y2, colour);
+  lcdLine(x2, y2, x0, y0, colour);
+}
 
+/* Draw XBitMap Files (*.xbm), exported from GIMP,
+ * Usage: Export from GIMP to *.xbm, rename *.xbm to *.c and open in editor.
+ * C Array can be directly used with this function */
+void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t colour) 
+{
+  int16_t i, j, byteWidth = (w + 7) / 8;
+  
+  for(j=0; j<h; j++) {
+    for(i=0; i<w; i++ ) {
+      if(*(bitmap + j * byteWidth + i / 8) & (1 << (i % 8))) {
+        lcdPixel(x+i, y+j, colour);
+      }
+    }
+  }
+}
 

@@ -284,7 +284,7 @@
 inline uint8_t lcdTextX(uint8_t x) { return x*6; }
 
 // This routine takes a column number from 0 to 20 and
-// returns the y coordinate on the screen (0-127) to make
+// returns the y coordinate on the screen (0-159) to make
 // it easy to place text
 inline uint8_t lcdTextY(uint8_t y) { return y*8; }
 
@@ -297,7 +297,6 @@ void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2);
 void lcdInitialise(uint8_t orientation);
 
 void lcdClearDisplay(uint16_t colour);
-void lcdPlot(uint8_t x, uint8_t y, uint16_t colour);
 void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
 void lcdFastVLine(int16_t x, int16_t y, int16_t h, uint16_t colour);
 void lcdFastHLine(int16_t x, int16_t y, int16_t w, uint16_t colour) ;
@@ -310,7 +309,15 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t heigth, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 
 void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
-void drawPixel(int16_t x, int16_t y, uint16_t colour) ;
+void lcdPixel(int16_t x, int16_t y, uint16_t colour) ;
+void lcdFillScreen(uint16_t colour);
 
+void lcdRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t colour) ;
+void lcdFillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h,int16_t r, uint16_t colour) ;
+void lcdFillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,int16_t delta, uint16_t colour) ;
+void lcdCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t colour) ;
+void lcdFillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t colour) ;
+void lcdTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t colour);
+void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t colour);
 
 #endif /* ILI9163_H_ */

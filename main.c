@@ -35,15 +35,21 @@ int main(void) {
 	//lcdFillRect(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
 	//lcdPutCh('A',5,5,LIME,BLACK,2);
+     //lcdPutS("ILI9163", 0, 50, ORANGE, BLACK, 3);
+    //lcdBitmap(bitmap,93,128,0,0,BLACK,LIME);
     //lcdBitmap(bitmap1,128,30,0,0,BLACK,LIME);
     //lcdBitmap(bitmap3,128,30,0,31,YELLOW,RED);
     //lcdBitmap(bitmap2,128,30,0,62,LIGHT_GOLDENROD_YELLOW,BLUE);
     //lcdBitmap(bitmap4,128,30,0,93,RED,PINK);
     //lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
-    //lcdPutS("ILI9163", 0, 50, ORANGE, BLACK, 3);
     //lcdCircle(50,50,30,ORANGE);
     //lcdFastHLine(10, 10, 50, LIME);
     //lcdFastVLine(10, 10, 50, LIME);
+    //lcdFillScreen(LIME);
+    //lcdFillRoundRect(10, 10, 70, 40, 10, LIME);
+    //lcdRoundRect(10, 10, 70, 40, 10, LIME);
+    //lcdFillCircle(60, 80, 30, CYAN);
+    //lcdPixel(20, 20, WHITE) ;
     while (1) {
 
     }
