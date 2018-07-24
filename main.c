@@ -50,6 +50,8 @@ int main(void) {
     //lcdRoundRect(10, 10, 70, 40, 10, LIME);
     //lcdFillCircle(60, 80, 30, CYAN);
     //lcdPixel(20, 20, WHITE) ;
+    lcdPutIneger(561, 5, 5, LIME, BLACK, 2);
+    
     while (1) {
 
     }

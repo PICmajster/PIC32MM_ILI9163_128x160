@@ -14,10 +14,11 @@
 
 uint8_t width = 128;
 uint8_t height = 160;
-int8_t colstart = 0, rowstart = 0;
+int8_t  colstart = 0, rowstart = 0;
 int16_t wrap;
 
-/*symulacja SPI*/
+
+/*simulation SPI*/
 void writeSD(uint8_t byteOut)
 { 
   uint8_t bitcnt ;
@@ -639,4 +640,11 @@ void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t 
     }
   }
 }
+/*convert integer to string and view on LCD*/
 
+    void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size)
+    {
+    char bufor[10];
+    sprintf(bufor,"%i",val);
+    lcdPutS(bufor, x, y, colour, bg, size);
+    }

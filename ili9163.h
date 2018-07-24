@@ -213,7 +213,7 @@
 #define NERO                    RGB565( 32,  32,  32)
 #define BLACK                   RGB565(  0,   0,   0)
 
-// Command defines only useful for this display controller chip
+/*Command defines only useful for this display controller chip*/
 #define NOP 					0x00
 #define SOFT_RESET 				0x01
 #define GET_RED_CHANNEL 		0x06
@@ -319,5 +319,7 @@ void lcdCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uin
 void lcdFillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t colour) ;
 void lcdTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t colour);
 void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t colour);
+
+void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
 
 #endif /* ILI9163_H_ */
