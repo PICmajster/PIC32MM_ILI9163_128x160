@@ -31,19 +31,19 @@ int main(void) {
     // Disable the Global Interrupts
     //INTERRUPT_GlobalDisable();
     lcdClearDisplay(BLACK);
-    //lcdPutS("PIC32MM", lcdTextX(1), lcdTextY(2), YELLOW, BLACK);
-	//lcdFilledRectangle(20, 20, 50, 50, RED);
+    
+	//lcdFillRect(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
-	//lcdPutCh('A',5,5,LIME,BLACK);
-//    lcdBitmap(bitmap1,128,30,0,0,BLACK,LIME);
-//    lcdBitmap(bitmap3,128,30,0,31,YELLOW,RED);
-//    lcdBitmap(bitmap2,128,30,0,62,LIGHT_GOLDENROD_YELLOW,BLUE);
-//    lcdBitmap(bitmap4,128,30,0,93,RED,PINK);
-//    lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
-    
-    //drawChar(5, 5, '1', ORANGE, BLACK,5);
-    drawString("ILI9163", 0, 50, ORANGE, BLACK, 3);
-    
+	//lcdPutCh('A',5,5,LIME,BLACK,2);
+    //lcdBitmap(bitmap1,128,30,0,0,BLACK,LIME);
+    //lcdBitmap(bitmap3,128,30,0,31,YELLOW,RED);
+    //lcdBitmap(bitmap2,128,30,0,62,LIGHT_GOLDENROD_YELLOW,BLUE);
+    //lcdBitmap(bitmap4,128,30,0,93,RED,PINK);
+    //lcdBitmap(bitmap5,128,30,0,124,WHITE,BLACK);
+    //lcdPutS("ILI9163", 0, 50, ORANGE, BLACK, 3);
+    //lcdCircle(50,50,30,ORANGE);
+    //lcdFastHLine(10, 10, 50, LIME);
+    //lcdFastVLine(10, 10, 50, LIME);
     while (1) {
 
     }

@@ -13,7 +13,10 @@
 #include "font8x8.h"
 #include "font8x12.h"
 
-
+uint8_t width = 128;
+uint8_t height = 160;
+int8_t colstart = 0, rowstart = 0;
+int16_t wrap;
 
 /*symulacja SPI*/
 void writeSD(uint8_t byteOut)
@@ -58,7 +61,8 @@ void lcdWriteParameter_bis(uint8_t data)
 
 void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2)
 {
-	writeSD(dataByte1);
+	DC_OFF;
+    writeSD(dataByte1);
 	writeSD(dataByte2);
 }
 
@@ -281,6 +285,40 @@ void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
 	}
 }
 
+
+void lcdFastVLine(int16_t x, int16_t y, int16_t h, uint16_t colour) 
+{
+  // Rudimentary clipping
+  if((x >= width) || (y >= height)) return;
+  
+  if((y+h-1) >= height) {
+    h = height-y;
+  }
+  
+  setAddrWindow(x, y, x, y+h-1);
+    
+  while (h--) {
+    lcdWriteData_bis(colour >> 8, colour);
+  }
+}
+
+
+void lcdFastHLine(int16_t x, int16_t y, int16_t w, uint16_t colour) 
+{
+  // Rudimentary clipping
+  if((x >= width) || (y >= height)) return;
+  if((x+w-1) >= width)  {
+    w = width-x;
+  }
+  
+  setAddrWindow(x, y, x+w-1, y);
+    
+  while (w--) {
+   lcdWriteData_bis(colour >> 8, colour);
+  }
+}
+
+
 /*Draw a rectangle between x0, y0 and x1, y1*/
 void lcdRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
 {
@@ -293,30 +331,24 @@ void lcdRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colou
 /* Draw a filled rectangle
    Note:	y1 must be greater than y0  and x1 must be greater than x0
  			for this to work*/
-void lcdFilledRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour)
+void lcdFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour) 
 {
-	uint16_t pixels;
-			
-	/* To speed up plotting we define a x window with the width of the 
-	   rectangle and then just output the required number of bytes to
-	   fill down to the end point*/
-	
-	lcdWriteCommand_bis(SET_COLUMN_ADDRESS); // Horizontal Address Start Position
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x0);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x1); 
+  if((x >= width) || (y >= height)) return;
+  if((x + w - 1) >= width)  {
+    w = width  - x;
+  }
+  if((y + h - 1) >= height) {
+    h = height - y;
+  }
   
-	lcdWriteCommand_bis(SET_PAGE_ADDRESS); // Vertical Address end Position
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(y0);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f); //9f = 160px
-		
-	lcdWriteCommand_bis(WRITE_MEMORY_START);
-	
-	for (pixels = 0; pixels < ((x1 - x0) * (y1 - y0)); pixels++)
-		lcdWriteData_bis(colour >> 8, colour);;
+  setAddrWindow(x, y, x+w-1, y+h-1);
+  
+  for(y=h; y>0; y--) {
+    for(x=w; x>0; x--) {
+        lcdWriteData_bis(colour >> 8, colour);
+
+    }
+  } 
 }
 
 /* Draw a circle
@@ -408,7 +440,7 @@ void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t height, uint8_t
 /*LCD text manipulation functions*/
 
 /* Plot a character at the specified x, y co-ordinates (top left hand corner of character)*/
-void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour)
+void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour, uint8_t size)
 {
 	uint8_t row, column;
 	
@@ -435,10 +467,21 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 	{
 		for (column = 0; column < 6; column++)
 		{
-			if ((font6x8[character][column]) & (1 << row))
+		if(size == 1){
+            if ((font6x8[character][column]) & (1 << row))
             
 				 lcdWriteData_bis(fgColour >> 8, fgColour);
             else lcdWriteData_bis(bgColour >> 8, bgColour);
+                     }
+        
+        if(size >1){
+            if ((font6x8[character][column]) & (1 << row))
+            
+				 lcdFillRect(x+(column*size), y+(row*size), size, size, fgColour);
+            else lcdFillRect(x+(column*size), y+(row*size), size, size, bgColour);
+                     }
+        
+        
         }  
                  
 		
@@ -446,46 +489,32 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 }
 
 /*Plot a string of characters to the LCD*/
-void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour)
-{
-	uint8_t origin = x;
-    uint8_t characterNumber;
-
-	for (characterNumber = 0; characterNumber < strlen(string); characterNumber++)
-	{
-		// Check if we are out of bounds and move to 
-		// the next line if we are
-		if (x > 121)
-		{
-			x = origin;
-			y += 8;
-		}
-
-		// If we move past the bottom of the screen just exit
-		if (y > 152) break; //120 oryginal for 128x128
-
-		// Plot the current character
-//		lcdPutCh(string[characterNumber], x, y, fgColour, bgColour);
-		x += 6;
-	}
+void lcdPutS(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size) {
+  
+  while(*c) {
+    if (*c == '\n') {
+      y += size*8;
+      x  = 0;
+    } else if (*c == '\r') {
+      // Skip
+    } else {
+     lcdPutCh(*c, x, y, colour, bg, size);// lcdPutCh(x, y, *c, colour, bg, size);
+      x += size*6;
+      if (wrap && (x > (width - size*6))) {
+        y += size*8;
+        x = 0;
+      }
+    }
+    c++;
+  }
 }
 
-/**************************************************
+/*************************
  * 
- * LCD special functions / translation from ST7735
+ * LCD special functions 
  * 
- **************************************************/
-uint8_t width = 128;
-uint8_t height = 160;
-int8_t colstart = 0, rowstart = 0;
-int16_t wrap;
+ *************************/
 
-void pushColour(uint16_t colour) 
-{
-  DC_OFF;//SET_HIGH(DXL);
-  lcdWriteParameter_bis(colour >> 8); //spiWrite(colour >> 8);
-  lcdWriteParameter_bis(colour); //spiWrite(colour);
-}
 
 void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) 
 {
@@ -509,83 +538,10 @@ void drawPixel(int16_t x, int16_t y, uint16_t colour)
   if((x < 0) ||(x >= width) || (y < 0) || (y >= height)) return;
 
   setAddrWindow(x,y,x+1,y+1);
-  pushColour(colour);
+  lcdWriteData_bis(colour >> 8, colour);
 }
 
-void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour) 
-{
-  if((x >= width) || (y >= height)) return;
-  if((x + w - 1) >= width)  {
-    w = width  - x;
-  }
-  if((y + h - 1) >= height) {
-    h = height - y;
-  }
-  uint8_t hi = colour >> 8, lo = colour;
-  
-  setAddrWindow(x, y, x+w-1, y+h-1);
-  DC_OFF; //SET_HIGH(DXL);
 
-  for(y=h; y>0; y--) {
-    for(x=w; x>0; x--) {
-      lcdWriteParameter_bis(hi); //spiWrite(hi);
-      lcdWriteParameter_bis(lo); //spiWrite(lo);
-    }
-  } 
-}
 
-void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, uint16_t bg, uint8_t size) {
 
-  if((x >= width)              || 
-     (y >= height)             || 
-     ((x + 6 * size - 1) < 0)  || 
-     ((y + 8 * size - 1) < 0)) 
-    return;
-  
-  int8_t i;
-  for (i=0; i<6; i++ ) {
-    uint8_t line;
-    if (i == 6)  //oryg 5
-      line = 0x0;
-    else 
-      line = font6x8[character][i];//*(font1+(character*5)+i);
-    
-    int8_t j;
-    for (j = 0; j<8; j++) {
-      if (line & 0x1) {
-        if (size == 1) // default size
-          drawPixel(x+i, y+j, colour);
-        else {  // big size
-          fillRect(x+(i*size), y+(j*size), size, size, colour);
-        } 
-      } else if (bg != colour) {
-        if (size == 1) // default size
-          drawPixel(x+i, y+j, bg);
-        else {  // big size
-          fillRect(x+i*size, y+j*size, size, size, bg);
-        }
-      }
-      line >>= 1;
-    }
-  }
-}
 
-void drawString(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size) {
-  
-  while(*c) {
-    if (*c == '\n') {
-      y += size*8;
-      x  = 0;
-    } else if (*c == '\r') {
-      // Skip
-    } else {
-      drawChar(x, y, *c, colour, bg, size);
-      x += size*6;
-      if (wrap && (x > (width - size*6))) {
-        y += size*8;
-        x = 0;
-      }
-    }
-    c++;
-  }
-}

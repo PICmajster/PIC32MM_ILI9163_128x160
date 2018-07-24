@@ -299,20 +299,18 @@ void lcdInitialise(uint8_t orientation);
 void lcdClearDisplay(uint16_t colour);
 void lcdPlot(uint8_t x, uint8_t y, uint16_t colour);
 void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
+void lcdFastVLine(int16_t x, int16_t y, int16_t h, uint16_t colour);
+void lcdFastHLine(int16_t x, int16_t y, int16_t w, uint16_t colour) ;
 void lcdRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
-void lcdFilledRectangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
+void lcdFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour);
 void lcdCircle(int16_t xCentre, int16_t yCentre, int16_t radius, uint16_t colour);
 
-void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
-void lcdPutS(const char *string, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
+void lcdPutS(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
+void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour, uint8_t size);
 void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t heigth, uint8_t x, uint8_t y, uint16_t fgColour, uint16_t bgColour);
 
-/*Special Function translate from ST7735*/
-void pushColour(uint16_t colour);
 void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
 void drawPixel(int16_t x, int16_t y, uint16_t colour) ;
-void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t colour);
-void drawChar(int16_t x, int16_t y, unsigned char character, uint16_t colour, uint16_t bg, uint8_t size);
-void drawString(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
+
 
 #endif /* ILI9163_H_ */
