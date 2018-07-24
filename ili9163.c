@@ -9,9 +9,8 @@
 #include "delay.h"
 #include <string.h>
 #include "ili9163.h"
-#include "font5x8.h"
-#include "font8x8.h"
-#include "font8x12.h"
+#include "font6x8.h"
+
 
 uint8_t width = 128;
 uint8_t height = 160;
@@ -370,8 +369,6 @@ void lcdFillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t colour)
 
 // Plot a Bitmap at the specified x, y co-ordinates (top left hand corner of Bitmap)
 /*
- * 31.8.2017 grn
- * 
  * Bitmap is drawn from left to right and from top to bottom 
  *
  * Convert bitmap with: http://www.riuson.com/lcd-image-converter
@@ -411,7 +408,7 @@ void lcdBitmap(const unsigned char *data, uint8_t width, uint8_t height, uint8_t
 			{
 			
 				if (data[pic] & (1 << row))
-					lcdWriteData_bis(fgColour >> 8, fgColour);
+					 lcdWriteData_bis(fgColour >> 8, fgColour);
 				else lcdWriteData_bis(bgColour >> 8, bgColour);
 				pic++;
 			}
@@ -483,7 +480,7 @@ void lcdPutS(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_
     } else if (*c == '\r') {
       // Skip
     } else {
-     lcdPutCh(*c, x, y, colour, bg, size);// lcdPutCh(x, y, *c, colour, bg, size);
+     lcdPutCh(*c, x, y, colour, bg, size);
       x += size*6;
       if (wrap && (x > (width - size*6))) {
         y += size*8;

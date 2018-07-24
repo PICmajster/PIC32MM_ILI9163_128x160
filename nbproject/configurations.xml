@@ -12,10 +12,8 @@
       </logicalFolder>
       <itemPath>ili9163.h</itemPath>
       <itemPath>delay.h</itemPath>
-      <itemPath>font5x8.h</itemPath>
-      <itemPath>font8x8.h</itemPath>
-      <itemPath>font8x12.h</itemPath>
       <itemPath>bitmap.h</itemPath>
+      <itemPath>font6x8.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

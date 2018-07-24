@@ -1,11 +1,9 @@
 
-#ifndef FONT5X8_H
-#define	FONT5X8_H
+#ifndef FONT6X8_H
+#define	FONT6X8_H
 
-// 5x8 Font data
-// This font was created by Philippe Lucidarme and is available
-// from http://piclist.com/techref/datafile/charset/8x6.htm
-//
+// 6x8 Font data
+
 // Note: This table is arranged according to ASCII codes 0 to 255
 unsigned char font6x8[][6] = {
 {0x00,0x00,0x00,0x00,0x00,0x00},   //   0x00 0
@@ -266,5 +264,7 @@ unsigned char font6x8[][6] = {
 {0x00,0x00,0x00,0x00,0x00,0x00}    // ÿ 0xff 255
 };
 
-#endif	/* FONT5X8_H */
+#endif	/* FONT6X8_H */
+
+
 
