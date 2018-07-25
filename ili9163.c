@@ -2,6 +2,7 @@
 	ili9163.c
     ILI9163 128x160 LCD library for PIC32MM Microchip
     3.3 V
+    strefapic.blogspot.com
  ***********************************************************************/
 
 #include "mcu_config_files/mcc.h"
