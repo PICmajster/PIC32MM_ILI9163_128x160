@@ -1,9 +1,8 @@
 /************************************************************************
 	ili9163.c
-    ILI9163 128x160 LCD library
+    ILI9163 128x160 LCD library for PIC32MM Microchip
     3.3 V
-    for PIC32MM
-***********************************************************************/
+ ***********************************************************************/
 
 #include "mcu_config_files/mcc.h"
 #include "delay.h"
@@ -14,7 +13,6 @@
 
 uint8_t width = 128;
 uint8_t height = 160;
-int8_t  colstart = 0, rowstart = 0;
 int16_t wrap;
 
 
@@ -22,7 +20,7 @@ int16_t wrap;
 void writeSD(uint8_t byteOut)
 { 
   uint8_t bitcnt ;
-  SCE_ON;
+  CS_ON;
   DisplayCLK = 0 ;           
   delayUs(1);
   for (bitcnt = 8 ; bitcnt > 0 ; bitcnt--)
@@ -37,7 +35,7 @@ void writeSD(uint8_t byteOut)
   }
   DisplayCLK = 0 ;
   delayUs(1);
-  SCE_OFF;
+  CS_OFF;
   
 }
 
@@ -70,13 +68,13 @@ void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2)
 void lcdReset(void)
 {
 	//Chipselect ON
-	SCE_ON;	
+	CS_ON;	
 	// Reset pin is active low (0 = reset, 1 = ready)
 	RESET_ON;
 	delayMs(50);
 	RESET_OFF;
 	delayMs(150);
-	SCE_OFF;
+	CS_OFF;
 }
 
 // Initialise the display with the require screen orientation
@@ -435,7 +433,7 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(x);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x+5);
+	lcdWriteParameter_bis(x+6);
   
 	lcdWriteCommand_bis(SET_PAGE_ADDRESS); // Vertical Address end Position
 	lcdWriteParameter_bis(0x00);
@@ -501,19 +499,19 @@ void lcdPutS(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_
 
 void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) 
 {
-  lcdWriteCommand_bis(SET_COLUMN_ADDRESS); //writeCommand(ST7735_CASET); 
-  lcdWriteParameter_bis(0x00); //writeData(0x00);
-  lcdWriteParameter_bis(x0+colstart); //writeData(x0+colstart);   
-  lcdWriteParameter_bis(0x00); //writeData(0x00);
-  lcdWriteParameter_bis(x1+colstart); //writeData(x1+colstart);  
+  lcdWriteCommand_bis(SET_COLUMN_ADDRESS);
+  lcdWriteParameter_bis(0x00); 
+  lcdWriteParameter_bis(x0);   
+  lcdWriteParameter_bis(0x00); 
+  lcdWriteParameter_bis(x1);   
 
-  lcdWriteCommand_bis(SET_PAGE_ADDRESS); //writeCommand(ST7735_RASET); 
-  lcdWriteParameter_bis(0x00); //writeData(0x00);
-  lcdWriteParameter_bis(y0+rowstart); //writeData(y0+rowstart);  
-  lcdWriteParameter_bis(0x00); //writeData(0x00);
-  lcdWriteParameter_bis(y1+rowstart); //writeData(y1+rowstart); 
+  lcdWriteCommand_bis(SET_PAGE_ADDRESS); 
+  lcdWriteParameter_bis(0x00); 
+  lcdWriteParameter_bis(y0); 
+  lcdWriteParameter_bis(0x00); 
+  lcdWriteParameter_bis(y1); 
 
-  lcdWriteCommand_bis(WRITE_MEMORY_START); //writeCommand(ST7735_RAMWR);
+  lcdWriteCommand_bis(WRITE_MEMORY_START); 
 }
 
 void lcdPixel(int16_t x, int16_t y, uint16_t colour) 
@@ -641,10 +639,17 @@ void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t 
   }
 }
 /*convert integer to string and view on LCD*/
-
     void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size)
     {
     char bufor[10];
-    sprintf(bufor,"%i",val);
+    sprintf(bufor,"%i",val); /*konwersja val na string i zapis wyniku do bufora*/
     lcdPutS(bufor, x, y, colour, bg, size);
     }
+    
+  /*convert float to string and view on LCD*/
+    void lcdPutFloat(float val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size)
+    {
+    char bufor[10];
+    sprintf(bufor,"%2.1f",val); /*konwersja val na string i zapis wyniku do bufora, jedno miejsce po przecinku je?li chcesz dwa miejsca to 1f zamie? na 2f*/
+    lcdPutS(bufor, x, y, colour, bg, size);
+    }  

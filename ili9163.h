@@ -1,8 +1,17 @@
+/*
+    File Name:        :  ili9163.h
+
+    Device            :  PIC32MM0256GPM048
+    Compiler          :  XC32 2.05
+    MPLAB             :  MPLAB X 4.15
+    Created by        :  http://strefapic.blogspot.com
+ */
+
 #ifndef ILI9163_H_
 #define ILI9163_H_
 
 /*
-     Signal
+     Signal LCD ---> MCU PIC32MM
    
      CS   (Chip Select)     --> RC5
      RESET                  --> RC4
@@ -14,8 +23,8 @@
 
 #define RESET_ON 	PORTCbits.RC4 = 0; 
 #define RESET_OFF 	PORTCbits.RC4 = 1; 	
-#define SCE_ON		PORTCbits.RC5 = 0; 
-#define SCE_OFF		PORTCbits.RC5 = 1; 
+#define CS_ON		PORTCbits.RC5 = 0; 
+#define CS_OFF		PORTCbits.RC5 = 1; 
 #define DC_ON		PORTCbits.RC3 = 0;
 #define DC_OFF		PORTCbits.RC3 = 1; 
 
@@ -321,5 +330,6 @@ void lcdTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int
 void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t colour);
 
 void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
+void lcdPutFloat(float val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
 
 #endif /* ILI9163_H_ */
