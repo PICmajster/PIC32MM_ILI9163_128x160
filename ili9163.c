@@ -165,7 +165,7 @@ void lcdInitialise(uint8_t orientation)
 	// Select display orientation
     lcdWriteCommand_bis(SET_ADDRESS_MODE);
 	lcdWriteParameter_bis(orientation);
-
+        
 	// Set the display to on
     lcdWriteCommand_bis(SET_DISPLAY_ON);
     //lcdWriteCommand(WRITE_MEMORY_START);
@@ -434,7 +434,7 @@ void lcdPutCh(unsigned char character, uint8_t x, uint8_t y, uint16_t fgColour, 
 	lcdWriteParameter_bis(0x00);
 	lcdWriteParameter_bis(x);
 	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(x+6);
+	lcdWriteParameter_bis(x+5);
   
 	lcdWriteCommand_bis(SET_PAGE_ADDRESS); // Vertical Address end Position
 	lcdWriteParameter_bis(0x00);

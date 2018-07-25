@@ -1,6 +1,7 @@
 /*
+    ILI9163 128x160 LCD library for PIC32MM Microchip
+    3.3 V
     File Name:        :  main.c
-
     Device            :  PIC32MM0256GPM048
     Compiler          :  XC32 2.05
     MPLAB             :  MPLAB X 4.15
@@ -30,7 +31,8 @@ int main(void) {
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalDisable();
-    lcdClearDisplay(BLACK);
+     
+     lcdClearDisplay(BLACK);
     
 	//lcdFillRect(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
@@ -51,7 +53,7 @@ int main(void) {
     //lcdFillCircle(60, 80, 30, CYAN);
     //lcdPixel(20, 20, WHITE) ;
     //lcdPutIneger(561, 5, 5, LIME, BLACK, 2); // dispaly integer
-    lcdPutFloat(561.2, 5, 5, LIME, BLACK, 2); // display float 0.0 
+    lcdPutFloat(561.2, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
     
     while (1) {
 
