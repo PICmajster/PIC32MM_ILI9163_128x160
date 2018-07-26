@@ -38,7 +38,7 @@ void PIN_MANAGER_Initialize(void)
     TRISCbits.TRISC4 = 0; /*RESET*/
     TRISBbits.TRISB3 = 0 ; /*SDO software */
     TRISBbits.TRISB8 = 0 ; /*SCK software */
-        
+    
     /****************************************************************************
      * Setting the Weak Pull Up and Weak Pull Down SFR(s)
      ***************************************************************************/

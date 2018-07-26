@@ -21,6 +21,9 @@
      
 */
 
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 160
+
 #define RESET_ON 	PORTCbits.RC4 = 0; 
 #define RESET_OFF 	PORTCbits.RC4 = 1; 	
 #define CS_ON		PORTCbits.RC5 = 0; 
@@ -30,17 +33,6 @@
 
 #define DisplayCLK   PORTBbits.RB8
 #define DisplaySDI   PORTBbits.RB3 
-
-/* Screen orientation defines:
- 0 = Ribbon at top
- 1 = Ribbon at left
- 2 = Ribbon at right
- 3 = Ribbon at bottom*/
-
-#define LCD_ORIENTATION0	96
-#define LCD_ORIENTATION1	160
-#define LCD_ORIENTATION2	192
-#define LCD_ORIENTATION3	0
 
  
 /*
@@ -285,6 +277,14 @@
 #define NEGATIVE_GAMMA_CORRECT	0xE1
 #define GAM_R_SEL               0xF2
 
+#define MADCTL_MY  0x80
+#define MADCTL_MX  0x40
+#define MADCTL_MV  0x20
+#define MADCTL_ML  0x10
+#define MADCTL_RGB 0x00
+#define MADCTL_BGR 0x08
+#define MADCTL_MH  0x04
+
 // Macros and in-lines:
 
 // This routine takes a row number from 0 to 20 and
@@ -303,9 +303,8 @@ void lcdReset(void);
 void lcdWriteCommand_bis(uint8_t cmdOut);
 void lcdWriteParameter_bis(uint8_t data);
 void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2);
-void lcdInitialise(uint8_t orientation);
+void lcdInitialise(void);//void lcdInitialise(uint8_t orientation);
 
-void lcdClearDisplay(uint16_t colour);
 void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
 void lcdFastVLine(int16_t x, int16_t y, int16_t h, uint16_t colour);
 void lcdFastHLine(int16_t x, int16_t y, int16_t w, uint16_t colour) ;
@@ -329,7 +328,9 @@ void lcdFillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t colour) ;
 void lcdTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t colour);
 void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t colour);
 
-void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
+void lcdPutInteger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
 void lcdPutFloat(float val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size);
+void setRotation(uint8_t m);
+
 
 #endif /* ILI9163_H_ */

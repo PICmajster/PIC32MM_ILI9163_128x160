@@ -20,9 +20,10 @@
 int main(void) {
     // initialize the device
     SYSTEM_Initialize();
-    RESET_OFF; /*Reset hgh*/
-    lcdInitialise(LCD_ORIENTATION3);
-        
+    RESET_OFF; /*Reset LCD high*/
+    lcdInitialise();
+    setRotation(2); /*ROTATION DISPLAY value 0...3*/
+    lcdFillScreen(BLACK);  
     // When using interrupts, you need to set the Global Interrupt Enable bits
     // Use the following macros to:
 
@@ -31,9 +32,7 @@ int main(void) {
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalDisable();
-     
-     lcdClearDisplay(BLACK);
-    
+            
 	//lcdFillRect(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
 	//lcdPutCh('A',5,5,LIME,BLACK,2);
@@ -49,11 +48,11 @@ int main(void) {
     //lcdFastVLine(10, 10, 50, LIME);
     //lcdFillScreen(LIME);
     //lcdFillRoundRect(10, 10, 70, 40, 10, LIME);
-    //lcdRoundRect(10, 10, 70, 40, 10, LIME);
+    lcdRoundRect(10, 10, 70, 40, 10, LIME);
     //lcdFillCircle(60, 80, 30, CYAN);
     //lcdPixel(20, 20, WHITE) ;
     //lcdPutIneger(561, 5, 5, LIME, BLACK, 2); // dispaly integer
-    lcdPutFloat(561.2, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
+    //lcdPutFloat(516.4, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
     
     while (1) {
 

@@ -12,9 +12,8 @@
 #include "font6x8.h"
 
 
-uint8_t width = 128;
-uint8_t height = 160;
-int16_t wrap;
+uint8_t width ;
+uint8_t height ;
 
 
 /*simulation SPI*/
@@ -79,7 +78,7 @@ void lcdReset(void)
 }
 
 // Initialise the display with the require screen orientation
-void lcdInitialise(uint8_t orientation)
+void lcdInitialise(void)//void lcdInitialise(uint8_t orientation)
 {   
 	// Hardware reset the LCD
 	lcdReset();
@@ -149,54 +148,13 @@ void lcdInitialise(uint8_t orientation)
 	
     lcdWriteCommand_bis(VCOM_OFFSET_CONTROL);
     lcdWriteParameter_bis(0x40); // nVM = 0, VMF = 64: VCOMH output = VMH, VCOML output = VML	
-    
-    lcdWriteCommand_bis(SET_COLUMN_ADDRESS);
-    lcdWriteParameter_bis(0x00); // XSH
-    lcdWriteParameter_bis(0x00); // XSL
-    lcdWriteParameter_bis(0x00); // XEH
-    lcdWriteParameter_bis(0x7f); // XEL (128 pixels x)
-   
-    lcdWriteCommand_bis(SET_PAGE_ADDRESS);
-    lcdWriteParameter_bis(0x00);
-    lcdWriteParameter_bis(0x00);
-    lcdWriteParameter_bis(0x00);
-    lcdWriteParameter_bis(0x9f); // 160 pixels y
-	
-	// Select display orientation
-    lcdWriteCommand_bis(SET_ADDRESS_MODE);
-	lcdWriteParameter_bis(orientation);
-        
+       	        
 	// Set the display to on
     lcdWriteCommand_bis(SET_DISPLAY_ON);
-    //lcdWriteCommand(WRITE_MEMORY_START);
-   
+        
 }
 
 /*LCD graphics functions*/
-
-void lcdClearDisplay(uint16_t colour)
-{
-	uint16_t pixel;
-  
-	/*set the column address to 0-127*/
-	lcdWriteCommand_bis(SET_COLUMN_ADDRESS);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x7f); //7f = 128px
-
-	/*Set the page address to 0-159*/
-	lcdWriteCommand_bis(SET_PAGE_ADDRESS);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x00);
-	lcdWriteParameter_bis(0x9f); //9f = 160px
-  
-	/*Plot the pixels*/
-	lcdWriteCommand_bis(WRITE_MEMORY_START);
-	for(pixel = 0; pixel < 20481; pixel++) lcdWriteData_bis(colour >> 8, colour);
-}
-
 
 // Draw a line from x0, y0 to x1, y1
 // Note:	This is a version of Bresenham's line drawing algorithm
@@ -482,7 +440,7 @@ void lcdPutS(char *c, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_
     } else {
      lcdPutCh(*c, x, y, colour, bg, size);
       x += size*6;
-      if (wrap && (x > (width - size*6))) {
+      if (0x00 && (x > (width - size*6))) {
         y += size*8;
         x = 0;
       }
@@ -502,13 +460,13 @@ void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
 {
   lcdWriteCommand_bis(SET_COLUMN_ADDRESS);
   lcdWriteParameter_bis(0x00); 
-  lcdWriteParameter_bis(x0);   
+  lcdWriteParameter_bis(x0);  
   lcdWriteParameter_bis(0x00); 
-  lcdWriteParameter_bis(x1);   
+  lcdWriteParameter_bis(x1);  
 
   lcdWriteCommand_bis(SET_PAGE_ADDRESS); 
   lcdWriteParameter_bis(0x00); 
-  lcdWriteParameter_bis(y0); 
+  lcdWriteParameter_bis(y0);
   lcdWriteParameter_bis(0x00); 
   lcdWriteParameter_bis(y1); 
 
@@ -640,7 +598,7 @@ void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t 
   }
 }
 /*convert integer to string and view on LCD*/
-    void lcdPutIneger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size)
+    void lcdPutInteger(uint16_t val, int16_t x, int16_t y, uint16_t colour, uint16_t bg, uint8_t size)
     {
     char bufor[10];
     sprintf(bufor,"%i",val); /*konwersja val na string i zapis wyniku do bufora*/
@@ -653,4 +611,34 @@ void lcdXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t 
     char bufor[10];
     sprintf(bufor,"%2.1f",val); /*konwersja val na string i zapis wyniku do bufora, jedno miejsce po przecinku je?li chcesz dwa miejsca to 1f zamie? na 2f*/
     lcdPutS(bufor, x, y, colour, bg, size);
-    }  
+    }
+   
+    /*ROTATION DISPLAY value 0...3*/
+     void setRotation(uint8_t m) 
+{
+  lcdWriteCommand_bis(SET_ADDRESS_MODE);
+   int8_t rotation;
+  rotation = m % 4; // can't be higher than 3
+  switch (rotation) {
+   case 0:
+     lcdWriteParameter_bis(MADCTL_MX | MADCTL_MY | MADCTL_BGR);
+     width  = SCREEN_WIDTH;
+     height = SCREEN_HEIGHT;
+     break;
+   case 1:
+     lcdWriteParameter_bis(MADCTL_MY | MADCTL_MV | MADCTL_BGR);
+     width  = SCREEN_HEIGHT;
+     height = SCREEN_WIDTH;
+     break;
+  case 2:
+     lcdWriteParameter_bis(MADCTL_BGR);
+     width  = SCREEN_WIDTH;
+     height = SCREEN_HEIGHT;
+    break;
+   case 3:
+     lcdWriteParameter_bis(MADCTL_MX | MADCTL_MV | MADCTL_BGR);
+     width  = SCREEN_HEIGHT;
+     height = SCREEN_WIDTH;
+     break;
+  }
+}
