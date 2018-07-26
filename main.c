@@ -48,11 +48,11 @@ int main(void) {
     //lcdFastVLine(10, 10, 50, LIME);
     //lcdFillScreen(LIME);
     //lcdFillRoundRect(10, 10, 70, 40, 10, LIME);
-    lcdRoundRect(10, 10, 70, 40, 10, LIME);
+    //lcdRoundRect(10, 10, 70, 40, 10, LIME);
     //lcdFillCircle(60, 80, 30, CYAN);
     //lcdPixel(20, 20, WHITE) ;
     //lcdPutIneger(561, 5, 5, LIME, BLACK, 2); // dispaly integer
-    //lcdPutFloat(516.4, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
+    lcdPutFloat(516.4, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
     
     while (1) {
 
