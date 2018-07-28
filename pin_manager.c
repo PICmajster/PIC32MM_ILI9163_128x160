@@ -39,6 +39,7 @@ void PIN_MANAGER_Initialize(void)
     TRISBbits.TRISB3 = 0 ; /*SDO software */
     TRISBbits.TRISB8 = 0 ; /*SCK software */
     
+        
     /****************************************************************************
      * Setting the Weak Pull Up and Weak Pull Down SFR(s)
      ***************************************************************************/
@@ -72,10 +73,10 @@ void PIN_MANAGER_Initialize(void)
     /****************************************************************************
      * Set the PPS
      ***************************************************************************/
-
+    
 
 }
-/* Piny analogowe na starcie oznaczone w MCU ANx, ustawienie : 0 - cyfrowe / 1 - analogowe
+/*Piny analogowe oznaczone w MCU jako ANx, ustawienie : 0 - cyfrowe / 1 - analogowe
 ANSELA
 RA0 --> ANSA0
 RA1 --> ANSA1
@@ -92,8 +93,11 @@ RC0 --> ANSC0
 RC1 --> ANSC1
 RC5 --> ANSC5
 RC8 --> ANSC8
-
- UWAGA nie wszystkie piny analogowe na starcie sa ujete w strukturze ANSELxbits
- np.RA6,RB13,RB14,RB15 w takim przypadku musimy uzyc zapisu bezposrednio do rejestru
+ 
+ UWAGA !!! nie wszystkie piny analogowe sa ujete w strukturze ANSELxbits.ANSxx
+ np.RA6,RB13,RB14,RB15 .W takim przypadku musimy uzyc zapisu bezposrednio do rejestru
  ANSELx = wartosc ;
+ Je?li zmieniamy rodzaj obudowy MCU koniecznie zwrocic na to uwage. W datasheet
+ z opisem w tabelce funkcjonalnosci pinow odczytamy piny oznaczone ANx i te podlegaja
+ uzycia wpisu w rejestr ANSELx aby uzywac je jako cyfrowe.
  */

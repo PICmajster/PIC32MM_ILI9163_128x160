@@ -303,7 +303,7 @@ void lcdReset(void);
 void lcdWriteCommand_bis(uint8_t cmdOut);
 void lcdWriteParameter_bis(uint8_t data);
 void lcdWriteData_bis(uint8_t dataByte1, uint8_t dataByte2);
-void lcdInitialise(void);//void lcdInitialise(uint8_t orientation);
+void lcdInitialize(void);//void lcdInitialise(uint8_t orientation);
 
 void lcdLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t colour);
 void lcdFastVLine(int16_t x, int16_t y, int16_t h, uint16_t colour);

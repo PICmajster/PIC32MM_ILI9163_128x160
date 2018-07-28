@@ -18,10 +18,10 @@
 #include "bitmap.h"
 
 int main(void) {
-    // initialize the device
+   
     SYSTEM_Initialize();
     RESET_OFF; /*Reset LCD high*/
-    lcdInitialise();
+    lcdInitialize();
     setRotation(2); /*ROTATION DISPLAY value 0...3*/
     lcdFillScreen(BLACK);  
     // When using interrupts, you need to set the Global Interrupt Enable bits
@@ -36,7 +36,7 @@ int main(void) {
 	//lcdFillRect(20, 20, 50, 50, RED);
 	//lcdLine(20,50,100,50,LIME);
 	//lcdPutCh('A',5,5,LIME,BLACK,2);
-     //lcdPutS("ILI9163", 0, 50, ORANGE, BLACK, 3);
+    //lcdPutS("ILI9163", 0, 50, ORANGE, BLACK, 3);
     //lcdBitmap(bitmap,93,128,0,0,BLACK,LIME);
     //lcdBitmap(bitmap1,128,30,0,0,BLACK,LIME);
     //lcdBitmap(bitmap3,128,30,0,31,YELLOW,RED);
@@ -51,10 +51,11 @@ int main(void) {
     //lcdRoundRect(10, 10, 70, 40, 10, LIME);
     //lcdFillCircle(60, 80, 30, CYAN);
     //lcdPixel(20, 20, WHITE) ;
-    //lcdPutIneger(561, 5, 5, LIME, BLACK, 2); // dispaly integer
+    //lcdPutInteger(561, 5, 5, LIME, BLACK, 2); // display integer
     lcdPutFloat(516.4, 5, 5, LIME, BLACK, 2); // display float 0.0 , size set 1 normal, > 1 bigger
     
     while (1) {
+      
 
     }
 }

@@ -78,7 +78,7 @@ void lcdReset(void)
 }
 
 // Initialise the display with the require screen orientation
-void lcdInitialise(void)//void lcdInitialise(uint8_t orientation)
+void lcdInitialize(void)//void lcdInitialise(uint8_t orientation)
 {   
 	// Hardware reset the LCD
 	lcdReset();
