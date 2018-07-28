@@ -97,7 +97,7 @@ RC8 --> ANSC8
  UWAGA !!! nie wszystkie piny analogowe sa ujete w strukturze ANSELxbits.ANSxx
  np.RA6,RB13,RB14,RB15 .W takim przypadku musimy uzyc zapisu bezposrednio do rejestru
  ANSELx = wartosc ;
- Je?li zmieniamy rodzaj obudowy MCU koniecznie zwrocic na to uwage. W datasheet
+ Jesli zmieniamy rodzaj obudowy MCU koniecznie zwrocic na to uwage. W datasheet
  z opisem w tabelce funkcjonalnosci pinow odczytamy piny oznaczone ANx i te podlegaja
  uzycia wpisu w rejestr ANSELx aby uzywac je jako cyfrowe.
  */
