@@ -18,26 +18,27 @@ uint8_t height ;
 
 /*simulation SPI*/
 void writeSD(uint8_t byteOut)
-{ 
+{
   uint8_t bitcnt ;
   CS_ON;
-  DisplayCLK = 0 ;           
+  delayUs(1); /*very important*/
+  DisplayCLK = 0 ;          
   delayUs(1);
   for (bitcnt = 8 ; bitcnt > 0 ; bitcnt--)
   {
     DisplaySDI = (byteOut&0x80) ? 1 : 0 ;  // transfer current bit 7 of byteOut to DisplaySDI pin
     delayUs(1);
-    DisplayCLK = 1 ; 
+    DisplayCLK = 1 ;
     delayUs(1);
     DisplayCLK = 0 ;
     delayUs(1);
     byteOut = byteOut << 1 ;   // logical shift left: get next bit to b7
   }
   DisplayCLK = 0 ;
+ 
   delayUs(1);
   CS_OFF;
-  
-}
+  }
 
 /********************************************
  * 

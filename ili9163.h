@@ -27,7 +27,8 @@
 #define RESET_ON 	PORTCbits.RC4 = 0; 
 #define RESET_OFF 	PORTCbits.RC4 = 1; 	
 #define CS_ON		PORTCbits.RC5 = 0; 
-#define CS_OFF		PORTCbits.RC5 = 1; 
+#define CS_OFF      PORTCbits.RC5 = 1; 
+
 #define DC_ON		PORTCbits.RC3 = 0;
 #define DC_OFF		PORTCbits.RC3 = 1; 
 

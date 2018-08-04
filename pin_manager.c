@@ -69,6 +69,8 @@ void PIN_MANAGER_Initialize(void)
    
     ANSELBbits.ANSB3 = 0 ; /*set digital for RB3*/
     ANSELCbits.ANSC5 = 0; /*set digital pins for RC5*/
+    
+   
         
     /****************************************************************************
      * Set the PPS
